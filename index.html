@@ -10,7 +10,7 @@
     :root {
       --black:   #050505;
       --dark:    #0f0f0f;
-      --card:    #151515;
+      --card:    #131313;
       --border:  rgba(255,255,255,0.07);
       --orange:  #ff4500;
       --orange2: #ff7a00;
@@ -22,6 +22,26 @@
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: var(--dark); }
     ::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 2px; }
+
+    /* LOADER */
+    #loader {
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--black);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 1.5rem;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+    #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    .loader-logo {
+      font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; letter-spacing: 0.2em;
+      background: linear-gradient(135deg, #fff, var(--orange));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+    .loader-bar { width: 200px; height: 2px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow:hidden; }
+    .loader-fill { height: 100%; background: linear-gradient(90deg, var(--orange), var(--orange2)); width: 0; border-radius: 2px; animation: load 2s ease forwards; }
+    @keyframes load { to{width:100%} }
 
     /* NAV */
     nav {
@@ -54,34 +74,29 @@
     /* HERO */
     #hero {
       position: relative; width: 100%; height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden;
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
     }
-    #three-canvas {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      z-index: 0;
-    }
+    #three-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
     .hero-content {
       position: relative; z-index: 2; text-align: center;
       display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
-      pointer-events: none;
+      pointer-events: none; opacity: 0;
     }
     .hero-eyebrow {
       font-size: 0.72rem; font-weight: 700; letter-spacing: 0.4em; color: var(--orange);
-      text-transform: uppercase; opacity: 0;
+      text-transform: uppercase;
     }
     .hero-title {
       font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(5rem, 14vw, 13rem);
-      line-height: 0.9; letter-spacing: 0.04em;
-      color: #fff; opacity: 0;
+      line-height: 0.9; letter-spacing: 0.04em; color: #fff;
     }
-    .hero-title span { color: var(--orange); display: block; }
+    .hero-title span { color: var(--orange); display: block; text-shadow: 0 0 60px rgba(255,69,0,0.5); }
     .hero-sub {
       font-size: 1rem; color: rgba(255,255,255,0.55); font-weight: 400;
-      max-width: 420px; line-height: 1.7; opacity: 0;
+      max-width: 420px; line-height: 1.7;
     }
-    .hero-actions { display: flex; gap: 1rem; pointer-events: all; opacity: 0; }
+    .hero-actions { display: flex; gap: 1rem; pointer-events: all; }
     .btn-primary {
       display: flex; align-items: center; gap: 0.6rem;
       background: linear-gradient(135deg, var(--orange), var(--orange2));
@@ -103,78 +118,65 @@
       z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
     }
     .scroll-hint span { font-size: 0.65rem; letter-spacing: 0.3em; color: rgba(255,255,255,0.3); text-transform: uppercase; }
-    .scroll-line {
-      width: 1px; height: 50px;
-      background: linear-gradient(to bottom, var(--orange), transparent);
-      animation: scrollPulse 1.8s ease-in-out infinite;
-    }
-    @keyframes scrollPulse { 0%,100%{opacity:0.3;transform:scaleY(1)} 50%{opacity:1;transform:scaleY(1.2)} }
+    .scroll-line { width: 1px; height: 50px; background: linear-gradient(to bottom, var(--orange), transparent); animation: scrollPulse 1.8s ease-in-out infinite; }
+    @keyframes scrollPulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
 
     /* MARQUEE */
-    .marquee-wrap {
-      overflow: hidden; background: linear-gradient(135deg, var(--orange), var(--orange2));
-      padding: 0.9rem 0; border-top: 1px solid rgba(255,255,255,0.1);
-    }
-    .marquee-track {
-      display: flex; gap: 0; width: max-content;
-      animation: marquee 22s linear infinite;
-    }
+    .marquee-wrap { overflow: hidden; background: linear-gradient(135deg, var(--orange), var(--orange2)); padding: 0.9rem 0; }
+    .marquee-track { display: flex; width: max-content; animation: marquee 22s linear infinite; }
     .marquee-track span { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.2em; color: #fff; text-transform: uppercase; padding: 0 3rem; white-space: nowrap; }
     @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
-    /* SECTIONS GENERAL */
+    /* SECTIONS */
     section { padding: 8rem 3rem; }
-    .section-label {
-      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.4em;
-      color: var(--orange); text-transform: uppercase; margin-bottom: 1rem;
-    }
-    .section-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.8rem, 5vw, 4.5rem); letter-spacing: 0.05em;
-      line-height: 1; color: #fff; margin-bottom: 1.5rem;
-    }
+    .section-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.4em; color: var(--orange); text-transform: uppercase; margin-bottom: 1rem; }
+    .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.8rem, 5vw, 4.5rem); letter-spacing: 0.05em; line-height: 1; color: #fff; margin-bottom: 1.5rem; }
     .section-sub { color: rgba(255,255,255,0.5); max-width: 480px; line-height: 1.8; font-size: 0.95rem; }
 
-    /* WHY SECTION */
+    /* WHY */
     #why { background: var(--dark); }
-    .why-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
-      align-items: center; max-width: 1200px; margin: 0 auto;
-    }
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; max-width: 1200px; margin: 0 auto; }
     .why-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     .why-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 14px; padding: 1.8rem 1.5rem;
-      transition: border-color 0.3s, transform 0.3s;
-      opacity: 0; transform: translateY(40px);
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.8rem 1.5rem;
+      opacity: 0; transform: translateY(40px); transition: border-color 0.3s;
     }
-    .why-card:hover { border-color: rgba(255,69,0,0.4); transform: translateY(-4px) !important; }
+    .why-card:hover { border-color: rgba(255,69,0,0.4); }
     .why-icon { font-size: 2rem; margin-bottom: 1rem; }
     .why-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; }
     .why-card p { color: rgba(255,255,255,0.5); font-size: 0.82rem; line-height: 1.6; }
 
-    /* PRODUCTS */
-    #products { background: var(--black); }
-    .products-header { text-align: center; max-width: 600px; margin: 0 auto 4rem; }
+    /* PRODUCTS — 3D CATWALK */
+    #products { background: var(--black); overflow: hidden; }
+    .products-header { text-align: center; max-width: 600px; margin: 0 auto 5rem; }
     .products-header .section-sub { margin: 0 auto; }
+
+    .catwalk-stage {
+      perspective: 1200px;
+      perspective-origin: 50% 50%;
+      max-width: 1300px; margin: 0 auto;
+    }
     .products-grid {
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
-      max-width: 1200px; margin: 0 auto;
+      transform-style: preserve-3d;
     }
+
+    /* PRODUCT CARD 3D TILT */
     .product-card {
       background: var(--card); border: 1px solid var(--border); border-radius: 16px;
-      overflow: hidden; transition: transform 0.4s, border-color 0.3s, box-shadow 0.4s;
-      opacity: 0; transform: translateY(60px);
-      cursor: pointer;
+      overflow: hidden;
+      opacity: 0; transform: translateZ(-400px) rotateY(25deg) rotateX(10deg);
+      cursor: pointer; position: relative;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      will-change: transform;
     }
-    .product-card:hover {
-      transform: translateY(-8px) scale(1.02) !important;
-      border-color: rgba(255,69,0,0.5);
-      box-shadow: 0 20px 60px rgba(255,69,0,0.15);
+    .product-card:hover { border-color: rgba(255,69,0,0.5); box-shadow: 0 25px 60px rgba(255,69,0,0.18); }
+    .card-shine {
+      position: absolute; inset: 0; z-index: 10; opacity: 0; pointer-events: none;
+      border-radius: 16px; transition: opacity 0.3s;
     }
     .product-img {
-      width: 100%; aspect-ratio: 3/4; background: #1a1a1a;
-      overflow: hidden; position: relative;
+      width: 100%; aspect-ratio: 3/4; background: #1a1a1a; overflow: hidden; position: relative;
     }
     .product-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
     .product-card:hover .product-img img { transform: scale(1.08); }
@@ -188,8 +190,7 @@
     .product-badge {
       position: absolute; top: 1rem; left: 1rem;
       background: linear-gradient(135deg, var(--orange), var(--orange2));
-      color: #fff; font-size: 0.65rem; font-weight: 800;
-      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #fff; font-size: 0.65rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
       padding: 0.3rem 0.7rem; border-radius: 4px;
     }
     .product-info { padding: 1.4rem 1.4rem 1.6rem; }
@@ -206,72 +207,46 @@
     }
     .product-btn:hover { opacity: 0.8; }
 
-    /* HOW TO ORDER */
+    /* ORDER */
     #order { background: var(--dark); }
     .order-wrap { max-width: 900px; margin: 0 auto; }
     .order-steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; margin-top: 4rem; }
     .order-step {
       text-align: center; padding: 2.5rem 1.5rem;
       background: var(--card); border: 1px solid var(--border); border-radius: 16px;
-      position: relative; opacity: 0; transform: translateY(40px);
-      transition: border-color 0.3s;
+      position: relative; opacity: 0; transform: translateY(40px); transition: border-color 0.3s;
     }
     .order-step:hover { border-color: rgba(255,69,0,0.3); }
     .step-num {
-      font-family: 'Bebas Neue', sans-serif; font-size: 4rem; letter-spacing: 0.05em;
-      line-height: 1;
+      font-family: 'Bebas Neue', sans-serif; font-size: 4rem; letter-spacing: 0.05em; line-height: 1;
       background: linear-gradient(135deg, var(--orange), var(--orange2));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
     .order-step h3 { font-size: 1rem; font-weight: 700; margin: 0.8rem 0 0.5rem; }
     .order-step p { color: rgba(255,255,255,0.45); font-size: 0.82rem; line-height: 1.6; }
-    .step-connector {
-      position: absolute; top: 50%; right: -1rem; transform: translateY(-50%);
-      color: var(--orange); font-size: 1.2rem; opacity: 0.4;
-    }
+    .step-connector { position: absolute; top: 50%; right: -1rem; transform: translateY(-50%); color: var(--orange); font-size: 1.2rem; opacity: 0.4; }
 
     /* TESTIMONIALS */
     #testimonials { background: var(--black); }
     .testimonials-header { text-align: center; margin-bottom: 4rem; }
     .testimonials-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
-    .testimonial-card {
-      background: var(--card); border: 1px solid var(--border); border-radius: 16px;
-      padding: 2rem 1.8rem; opacity: 0; transform: translateY(30px);
-    }
+    .testimonial-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem 1.8rem; opacity: 0; transform: translateY(30px); }
     .stars { color: var(--orange); font-size: 0.9rem; margin-bottom: 1.2rem; letter-spacing: 0.1em; }
     .testimonial-card blockquote { color: rgba(255,255,255,0.75); font-size: 0.88rem; line-height: 1.8; margin-bottom: 1.5rem; font-style: italic; }
     .testimonial-author { display: flex; align-items: center; gap: 0.8rem; }
-    .author-avatar {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--orange), var(--orange2));
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 0.8rem; color: #fff; flex-shrink: 0;
-    }
+    .author-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--orange), var(--orange2)); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; color: #fff; flex-shrink: 0; }
     .author-name { font-size: 0.82rem; font-weight: 700; }
     .author-handle { font-size: 0.72rem; color: rgba(255,255,255,0.35); }
 
     /* CTA BANNER */
-    #cta-banner {
-      background: linear-gradient(135deg, #1a0800, #0f0f0f);
-      border-top: 1px solid rgba(255,69,0,0.2);
-      border-bottom: 1px solid rgba(255,69,0,0.2);
-      padding: 6rem 3rem; text-align: center;
-    }
-    .cta-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(3rem, 7vw, 6rem); letter-spacing: 0.04em; color: #fff;
-      margin-bottom: 1rem;
-    }
+    #cta-banner { background: linear-gradient(135deg, #1a0800, #0f0f0f); border-top: 1px solid rgba(255,69,0,0.2); border-bottom: 1px solid rgba(255,69,0,0.2); padding: 6rem 3rem; text-align: center; }
+    .cta-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 7vw, 6rem); letter-spacing: 0.04em; color: #fff; margin-bottom: 1rem; }
     .cta-title span { color: var(--orange); }
     .cta-sub { color: rgba(255,255,255,0.5); max-width: 500px; margin: 0 auto 2.5rem; font-size: 0.95rem; line-height: 1.8; }
     .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
     /* FOOTER */
-    footer {
-      background: #030303; border-top: 1px solid var(--border);
-      padding: 3rem; display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 1rem;
-    }
+    footer { background: #030303; border-top: 1px solid var(--border); padding: 3rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
     .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); }
     .footer-links { display: flex; gap: 1.5rem; }
     .footer-links a { color: rgba(255,255,255,0.3); text-decoration: none; font-size: 0.78rem; transition: color 0.2s; }
@@ -283,22 +258,33 @@
       position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
       width: 58px; height: 58px; border-radius: 50%;
       background: #25d366; display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 20px rgba(37,211,102,0.45);
-      text-decoration: none; transition: transform 0.2s, box-shadow 0.2s;
-      animation: waPulse 2.5s ease-in-out infinite;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.45); text-decoration: none;
+      transition: transform 0.2s; animation: waPulse 2.5s ease-in-out infinite;
     }
-    .wa-float:hover { transform: scale(1.1); box-shadow: 0 8px 30px rgba(37,211,102,0.6); }
-    @keyframes waPulse {
-      0%,100%{box-shadow:0 4px 20px rgba(37,211,102,0.45)}
-      50%{box-shadow:0 4px 35px rgba(37,211,102,0.7)}
-    }
+    .wa-float:hover { transform: scale(1.1); }
+    @keyframes waPulse { 0%,100%{box-shadow:0 4px 20px rgba(37,211,102,0.45)} 50%{box-shadow:0 4px 35px rgba(37,211,102,0.7)} }
     .wa-float svg { width: 28px; height: 28px; }
 
-    /* REVEAL UTIL */
     .reveal { opacity: 0; transform: translateY(50px); }
+
+    /* MORPH INDICATOR */
+    .morph-hint {
+      position: absolute; bottom: 6rem; right: 3rem; z-index: 2;
+      display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; opacity: 0;
+    }
+    .morph-hint span { font-size: 0.6rem; letter-spacing: 0.2em; color: rgba(255,255,255,0.3); text-transform: uppercase; }
+    .morph-dots { display: flex; gap: 0.4rem; }
+    .morph-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: background 0.3s; }
+    .morph-dot.active { background: var(--orange); }
   </style>
 </head>
 <body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">APEX FIT</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+</div>
 
 <!-- NAV -->
 <nav id="nav">
@@ -314,13 +300,11 @@
 <!-- HERO -->
 <section id="hero">
   <canvas id="three-canvas"></canvas>
-  <div class="hero-content">
-    <div class="hero-eyebrow" id="h-eyebrow">New Collection — Women's Activewear</div>
-    <h1 class="hero-title" id="h-title">
-      PUSH<span>YOUR</span>LIMITS
-    </h1>
-    <p class="hero-sub" id="h-sub">Premium gymwear engineered for women who train hard, look incredible, and refuse to settle.</p>
-    <div class="hero-actions" id="h-actions">
+  <div class="hero-content" id="hero-content">
+    <div class="hero-eyebrow">New Collection — Women's Activewear</div>
+    <h1 class="hero-title">PUSH<span>YOUR</span>LIMITS</h1>
+    <p class="hero-sub">Premium gymwear engineered for women who train hard, look incredible, and refuse to settle.</p>
+    <div class="hero-actions">
       <a class="btn-primary" href="https://wa.me/447851110130?text=Hi%20Apex%20Fit!%20I%27d%20like%20to%20order" target="_blank">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         Shop on WhatsApp
@@ -328,6 +312,17 @@
       <a class="btn-outline" href="#products">View Collection</a>
     </div>
   </div>
+
+  <!-- MORPH DOTS -->
+  <div class="morph-hint" id="morph-hint">
+    <span>Scroll to transform</span>
+    <div class="morph-dots">
+      <div class="morph-dot active" id="dot0"></div>
+      <div class="morph-dot" id="dot1"></div>
+      <div class="morph-dot" id="dot2"></div>
+    </div>
+  </div>
+
   <div class="scroll-hint">
     <span>Scroll</span>
     <div class="scroll-line"></div>
@@ -361,172 +356,150 @@
       <p class="section-sub reveal">Every piece in the Apex Fit collection is designed to move with you — sculpting, supporting, and performing from warm-up to cool-down.</p>
     </div>
     <div class="why-cards">
-      <div class="why-card">
-        <div class="why-icon">⚡</div>
-        <h3>Performance Fit</h3>
-        <p>Four-way stretch fabric that moves with every rep.</p>
-      </div>
-      <div class="why-card">
-        <div class="why-icon">🔥</div>
-        <h3>Sculpting Design</h3>
-        <p>Contour seaming that flatters every body shape.</p>
-      </div>
-      <div class="why-card">
-        <div class="why-icon">💧</div>
-        <h3>Sweat-Wicking</h3>
-        <p>Stay dry and comfortable through every session.</p>
-      </div>
-      <div class="why-card">
-        <div class="why-icon">🛡️</div>
-        <h3>Built to Last</h3>
-        <p>Premium materials that hold their shape wash after wash.</p>
-      </div>
+      <div class="why-card"><div class="why-icon">⚡</div><h3>Performance Fit</h3><p>Four-way stretch fabric that moves with every rep.</p></div>
+      <div class="why-card"><div class="why-icon">🔥</div><h3>Sculpting Design</h3><p>Contour seaming that flatters every body shape.</p></div>
+      <div class="why-card"><div class="why-icon">💧</div><h3>Sweat-Wicking</h3><p>Stay dry and comfortable through every session.</p></div>
+      <div class="why-card"><div class="why-icon">🛡️</div><h3>Built to Last</h3><p>Premium materials that hold their shape wash after wash.</p></div>
     </div>
   </div>
 </section>
 
-<!-- PRODUCTS -->
+<!-- PRODUCTS — 3D CATWALK -->
 <section id="products">
   <div class="products-header">
     <p class="section-label">The Collection</p>
     <h2 class="section-title reveal">SHOP THE<br>NEW DROP</h2>
-    <p class="section-sub reveal">Message us on WhatsApp to order any piece. Fast dispatch, free UK delivery.</p>
+    <p class="section-sub reveal">Message us on WhatsApp to order. Fast dispatch, free UK delivery.</p>
   </div>
-  <div class="products-grid">
+  <div class="catwalk-stage">
+    <div class="products-grid" id="products-grid">
 
-    <div class="product-card">
-      <div class="product-img">
-        <img src="images/product-1.jpg" alt="Zip Crop Jacket Set" onerror="this.parentElement.innerHTML='<div class=\'product-img-placeholder\'><span>🏋️</span><p>Photo coming soon</p></div>'">
-        <div class="product-badge">New In</div>
-      </div>
-      <div class="product-info">
-        <p class="product-name">Zip Crop Jacket Set</p>
-        <p class="product-desc">High-neck zip crop with matching high-waist leggings. Sculpting fit.</p>
-        <div class="product-footer">
-          <span class="product-price">£34.99</span>
-          <a class="product-btn" href="https://wa.me/447851110130?text=Hi!%20I%27d%20like%20to%20order%20the%20Zip%20Crop%20Jacket%20Set" target="_blank">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            Order
-          </a>
+      <div class="product-card">
+        <div class="card-shine"></div>
+        <div class="product-img">
+          <img src="images/product-1.jpg" alt="Zip Crop Jacket Set" onerror="this.parentElement.innerHTML='<div class=\'product-img-placeholder\'><span>🏋️</span><p>Photo coming soon</p></div>'">
+          <div class="product-badge">New In</div>
+        </div>
+        <div class="product-info">
+          <p class="product-name">Zip Crop Jacket Set</p>
+          <p class="product-desc">High-neck zip crop with matching high-waist leggings. Sculpting fit.</p>
+          <div class="product-footer">
+            <span class="product-price">£34.99</span>
+            <a class="product-btn" href="https://wa.me/447851110130?text=Hi!%20I%27d%20like%20to%20order%20the%20Zip%20Crop%20Jacket%20Set" target="_blank">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              Order
+            </a>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="product-card">
-      <div class="product-img">
-        <img src="images/product-2.jpg" alt="Seamless Leggings" onerror="this.parentElement.innerHTML='<div class=\'product-img-placeholder\'><span>👟</span><p>Photo coming soon</p></div>'">
-        <div class="product-badge">Best Seller</div>
-      </div>
-      <div class="product-info">
-        <p class="product-name">High Waist Seamless Leggings</p>
-        <p class="product-desc">Ultra-soft seamless knit with sculpting waistband. Full length.</p>
-        <div class="product-footer">
-          <span class="product-price">£22.99</span>
-          <a class="product-btn" href="https://wa.me/447851110130?text=Hi!%20I%27d%20like%20to%20order%20the%20High%20Waist%20Seamless%20Leggings" target="_blank">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            Order
-          </a>
+      <div class="product-card">
+        <div class="card-shine"></div>
+        <div class="product-img">
+          <img src="images/product-2.jpg" alt="Seamless Leggings" onerror="this.parentElement.innerHTML='<div class=\'product-img-placeholder\'><span>👟</span><p>Photo coming soon</p></div>'">
+          <div class="product-badge">Best Seller</div>
+        </div>
+        <div class="product-info">
+          <p class="product-name">High Waist Seamless Leggings</p>
+          <p class="product-desc">Ultra-soft seamless knit with sculpting waistband. Full length.</p>
+          <div class="product-footer">
+            <span class="product-price">£22.99</span>
+            <a class="product-btn" href="https://wa.me/447851110130?text=Hi!%20I%27d%20like%20to%20order%20the%20High%20Waist%20Seamless%20Leggings" target="_blank">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              Order
+            </a>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="product-card">
-      <div class="product-img">
-        <img src="images/product-3.jpg" alt="Sports Bra Shorts Set" onerror="this.parentElement.innerHTML='<div class=\'product-img-placeholder\'><span>💪</span><p>Photo coming soon</p></div>'">
-        <div class="product-badge">New In</div>
-      </div>
-      <div class="product-info">
-        <p class="product-name">Sports Bra + Shorts Set</p>
-        <p class="product-desc">Strappy medium-support bra with bike shorts. Perfect for the gym.</p>
-        <div class="product-footer">
-          <span class="product-price">£28.99</span>
-          <a class="product-btn" href="https://wa.me/447851110130?text=Hi!%20I%27d%20like%20to%20order%20the%20Sports%20Bra%20and%20Shorts%20Set" target="_blank">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            Order
-          </a>
+      <div class="product-card">
+        <div class="card-shine"></div>
+        <div class="product-img">
+          <img src="images/product-3.jpg" alt="Sports Bra Shorts Set" onerror="this.parentElement.innerHTML='<div class=\'product-img-placeholder\'><span>💪</span><p>Photo coming soon</p></div>'">
+          <div class="product-badge">New In</div>
+        </div>
+        <div class="product-info">
+          <p class="product-name">Sports Bra + Shorts Set</p>
+          <p class="product-desc">Strappy medium-support bra with bike shorts. Perfect for the gym.</p>
+          <div class="product-footer">
+            <span class="product-price">£28.99</span>
+            <a class="product-btn" href="https://wa.me/447851110130?text=Hi!%20I%27d%20like%20to%20order%20the%20Sports%20Bra%20and%20Shorts%20Set" target="_blank">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              Order
+            </a>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="product-card">
-      <div class="product-img">
-        <img src="images/product-4.jpg" alt="Compression Set" onerror="this.parentElement.innerHTML='<div class=\'product-img-placeholder\'><span>🏃</span><p>Photo coming soon</p></div>'">
-      </div>
-      <div class="product-info">
-        <p class="product-name">Full Length Compression Set</p>
-        <p class="product-desc">Full-length leggings with matching long-sleeve crop. Ultimate support.</p>
-        <div class="product-footer">
-          <span class="product-price">£36.99</span>
-          <a class="product-btn" href="https://wa.me/447851110130?text=Hi!%20I%27d%20like%20to%20order%20the%20Full%20Length%20Compression%20Set" target="_blank">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            Order
-          </a>
+      <div class="product-card">
+        <div class="card-shine"></div>
+        <div class="product-img">
+          <img src="images/product-4.jpg" alt="Compression Set" onerror="this.parentElement.innerHTML='<div class=\'product-img-placeholder\'><span>🏃</span><p>Photo coming soon</p></div>'">
+        </div>
+        <div class="product-info">
+          <p class="product-name">Full Length Compression Set</p>
+          <p class="product-desc">Full-length leggings with matching long-sleeve crop. Ultimate support.</p>
+          <div class="product-footer">
+            <span class="product-price">£36.99</span>
+            <a class="product-btn" href="https://wa.me/447851110130?text=Hi!%20I%27d%20like%20to%20order%20the%20Full%20Length%20Compression%20Set" target="_blank">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              Order
+            </a>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="product-card">
-      <div class="product-img">
-        <img src="images/product-5.jpg" alt="Hoodie Joggers" onerror="this.parentElement.innerHTML='<div class=\'product-img-placeholder\'><span>🧥</span><p>Photo coming soon</p></div>'">
-        <div class="product-badge">Popular</div>
-      </div>
-      <div class="product-info">
-        <p class="product-name">Oversized Hoodie + Joggers</p>
-        <p class="product-desc">Cosy oversized fit hoodie with tapered joggers. Off-duty essential.</p>
-        <div class="product-footer">
-          <span class="product-price">£39.99</span>
-          <a class="product-btn" href="https://wa.me/447851110130?text=Hi!%20I%27d%20like%20to%20order%20the%20Oversized%20Hoodie%20and%20Joggers" target="_blank">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            Order
-          </a>
+      <div class="product-card">
+        <div class="card-shine"></div>
+        <div class="product-img">
+          <img src="images/product-5.jpg" alt="Hoodie Joggers" onerror="this.parentElement.innerHTML='<div class=\'product-img-placeholder\'><span>🧥</span><p>Photo coming soon</p></div>'">
+          <div class="product-badge">Popular</div>
+        </div>
+        <div class="product-info">
+          <p class="product-name">Oversized Hoodie + Joggers</p>
+          <p class="product-desc">Cosy oversized fit hoodie with tapered joggers. Off-duty essential.</p>
+          <div class="product-footer">
+            <span class="product-price">£39.99</span>
+            <a class="product-btn" href="https://wa.me/447851110130?text=Hi!%20I%27d%20like%20to%20order%20the%20Oversized%20Hoodie%20and%20Joggers" target="_blank">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              Order
+            </a>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="product-card">
-      <div class="product-img">
-        <img src="images/product-6.jpg" alt="Ribbed Workout Set" onerror="this.parentElement.innerHTML='<div class=\'product-img-placeholder\'><span>✨</span><p>Photo coming soon</p></div>'">
-        <div class="product-badge">New In</div>
-      </div>
-      <div class="product-info">
-        <p class="product-name">Ribbed Workout Set</p>
-        <p class="product-desc">Ribbed texture sports bra with matching mid-rise leggings. Studio-ready.</p>
-        <div class="product-footer">
-          <span class="product-price">£31.99</span>
-          <a class="product-btn" href="https://wa.me/447851110130?text=Hi!%20I%27d%20like%20to%20order%20the%20Ribbed%20Workout%20Set" target="_blank">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            Order
-          </a>
+      <div class="product-card">
+        <div class="card-shine"></div>
+        <div class="product-img">
+          <img src="images/product-6.jpg" alt="Ribbed Workout Set" onerror="this.parentElement.innerHTML='<div class=\'product-img-placeholder\'><span>✨</span><p>Photo coming soon</p></div>'">
+          <div class="product-badge">New In</div>
+        </div>
+        <div class="product-info">
+          <p class="product-name">Ribbed Workout Set</p>
+          <p class="product-desc">Ribbed texture sports bra with matching mid-rise leggings. Studio-ready.</p>
+          <div class="product-footer">
+            <span class="product-price">£31.99</span>
+            <a class="product-btn" href="https://wa.me/447851110130?text=Hi!%20I%27d%20like%20to%20order%20the%20Ribbed%20Workout%20Set" target="_blank">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              Order
+            </a>
+          </div>
         </div>
       </div>
-    </div>
 
+    </div>
   </div>
 </section>
 
-<!-- HOW TO ORDER -->
+<!-- ORDER -->
 <section id="order">
   <div class="order-wrap">
     <p class="section-label" style="text-align:center">Simple Process</p>
     <h2 class="section-title reveal" style="text-align:center">HOW TO ORDER</h2>
     <div class="order-steps">
-      <div class="order-step">
-        <div class="step-num">01</div>
-        <h3>Browse & Choose</h3>
-        <p>Find your favourite piece from our collection above.</p>
-        <span class="step-connector">→</span>
-      </div>
-      <div class="order-step">
-        <div class="step-num">02</div>
-        <h3>Message Us</h3>
-        <p>Tap the Order button or WhatsApp us on 07851 110130.</p>
-        <span class="step-connector">→</span>
-      </div>
-      <div class="order-step">
-        <div class="step-num">03</div>
-        <h3>We Deliver</h3>
-        <p>Pay securely and we'll dispatch your order fast. Free UK delivery.</p>
-      </div>
+      <div class="order-step"><div class="step-num">01</div><h3>Browse & Choose</h3><p>Find your favourite piece from our collection above.</p><span class="step-connector">→</span></div>
+      <div class="order-step"><div class="step-num">02</div><h3>Message Us</h3><p>Tap Order or WhatsApp us on 07851 110130.</p><span class="step-connector">→</span></div>
+      <div class="order-step"><div class="step-num">03</div><h3>We Deliver</h3><p>Pay securely and we'll dispatch your order fast. Free UK delivery.</p></div>
     </div>
   </div>
 </section>
@@ -538,34 +511,13 @@
     <h2 class="section-title reveal">WHAT THEY SAY</h2>
   </div>
   <div class="testimonials-grid">
-    <div class="testimonial-card">
-      <div class="stars">★★★★★</div>
-      <blockquote>"Absolutely obsessed with my leggings! The quality is unreal for the price. Ordered via WhatsApp and it was so easy. Will be buying more."</blockquote>
-      <div class="testimonial-author">
-        <div class="author-avatar">JM</div>
-        <div><div class="author-name">Jessica M.</div><div class="author-handle">Manchester</div></div>
-      </div>
-    </div>
-    <div class="testimonial-card">
-      <div class="stars">★★★★★</div>
-      <blockquote>"The zip crop jacket set is everything! Fits perfectly and looks so premium. Fast delivery too. Apex Fit is my new go-to."</blockquote>
-      <div class="testimonial-author">
-        <div class="author-avatar">SK</div>
-        <div><div class="author-name">Sophie K.</div><div class="author-handle">Leeds</div></div>
-      </div>
-    </div>
-    <div class="testimonial-card">
-      <div class="stars">★★★★★</div>
-      <blockquote>"Ordered the ribbed set and I got so many compliments at the gym. The material holds its shape even after washing. Brilliant brand."</blockquote>
-      <div class="testimonial-author">
-        <div class="author-avatar">LR</div>
-        <div><div class="author-name">Lauren R.</div><div class="author-handle">Liverpool</div></div>
-      </div>
-    </div>
+    <div class="testimonial-card"><div class="stars">★★★★★</div><blockquote>"Absolutely obsessed with my leggings! The quality is unreal for the price. Ordered via WhatsApp and it was so easy. Will be buying more."</blockquote><div class="testimonial-author"><div class="author-avatar">JM</div><div><div class="author-name">Jessica M.</div><div class="author-handle">Manchester</div></div></div></div>
+    <div class="testimonial-card"><div class="stars">★★★★★</div><blockquote>"The zip crop jacket set is everything! Fits perfectly and looks so premium. Fast delivery too. Apex Fit is my new go-to."</blockquote><div class="testimonial-author"><div class="author-avatar">SK</div><div><div class="author-name">Sophie K.</div><div class="author-handle">Leeds</div></div></div></div>
+    <div class="testimonial-card"><div class="stars">★★★★★</div><blockquote>"Ordered the ribbed set and I got so many compliments at the gym. The material holds its shape even after washing. Brilliant brand."</blockquote><div class="testimonial-author"><div class="author-avatar">LR</div><div><div class="author-name">Lauren R.</div><div class="author-handle">Liverpool</div></div></div></div>
   </div>
 </section>
 
-<!-- CTA BANNER -->
+<!-- CTA -->
 <div id="cta-banner">
   <h2 class="cta-title reveal">READY TO <span>LEVEL UP</span><br>YOUR WORKOUT?</h2>
   <p class="cta-sub reveal">Join hundreds of women who've upgraded their gymwear game with Apex Fit. Order today via WhatsApp — it takes 60 seconds.</p>
@@ -593,17 +545,25 @@
   <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
-<!-- THREE.JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-<!-- GSAP + ScrollTrigger -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
 <script>
 gsap.registerPlugin(ScrollTrigger);
 
-/* ─── THREE.JS HERO ─── */
-(function() {
+/* ══════════════════════════════════════
+   1. LOADER
+══════════════════════════════════════ */
+setTimeout(() => {
+  document.getElementById('loader').classList.add('hidden');
+  startScene();
+}, 2200);
+
+/* ══════════════════════════════════════
+   2. THREE.JS SCENE
+══════════════════════════════════════ */
+function startScene() {
   const canvas = document.getElementById('three-canvas');
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -611,132 +571,311 @@ gsap.registerPlugin(ScrollTrigger);
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
-  camera.position.set(0, 0, 5);
+  camera.position.set(0, 0, 5.5);
 
-  // Lighting
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
-  scene.add(ambientLight);
+  /* Lighting */
+  scene.add(new THREE.AmbientLight(0xffffff, 0.25));
 
-  const orangeLight = new THREE.PointLight(0xff4500, 8, 20);
+  const orangeLight = new THREE.PointLight(0xff4500, 10, 25);
   orangeLight.position.set(3, 3, 3);
   scene.add(orangeLight);
 
-  const blueLight = new THREE.PointLight(0x4444ff, 3, 20);
-  blueLight.position.set(-3, -2, 2);
-  scene.add(blueLight);
+  const purpleLight = new THREE.PointLight(0x8800ff, 4, 20);
+  purpleLight.position.set(-4, 2, 1);
+  scene.add(purpleLight);
 
-  const whiteLight = new THREE.PointLight(0xffffff, 2, 15);
-  whiteLight.position.set(0, 5, 0);
+  const whiteLight = new THREE.PointLight(0xffffff, 3, 18);
+  whiteLight.position.set(0, 5, 2);
   scene.add(whiteLight);
 
-  // Main 3D object — TorusKnot
+  /* ── PARTICLE TEXT "APEX FIT" ── */
+  let particleSystem = null;
+  let particleData = [];
+  let particlePhase = 0; // 0=forming, 1=holding, 2=exploding, 3=done
+  let phaseTimer = 0;
+
+  document.fonts.ready.then(() => {
+    const offCanvas = document.createElement('canvas');
+    offCanvas.width = 700; offCanvas.height = 160;
+    const ctx = offCanvas.getContext('2d');
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 110px Bebas Neue, Arial Black, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('APEX FIT', 350, 80);
+
+    const imgData = ctx.getImageData(0, 0, 700, 160);
+    const pts = [];
+    for (let y = 0; y < 160; y += 4) {
+      for (let x = 0; x < 700; x += 4) {
+        const idx = (y * 700 + x) * 4;
+        if (imgData.data[idx + 3] > 120) {
+          pts.push({ tx: (x - 350) / 75, ty: -(y - 80) / 75 });
+        }
+      }
+    }
+
+    const count = pts.length;
+    const positions = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
+
+    for (let i = 0; i < count; i++) {
+      // Start scattered
+      positions[i * 3]     = (Math.random() - 0.5) * 18;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 12;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 10;
+
+      const t = i / count;
+      colors[i * 3]     = 1;
+      colors[i * 3 + 1] = t < 0.5 ? 0.3 + t * 0.4 : 0.5;
+      colors[i * 3 + 2] = 0;
+
+      particleData.push({
+        x: positions[i * 3], y: positions[i * 3 + 1], z: positions[i * 3 + 2],
+        tx: pts[i].tx, ty: pts[i].ty,
+        ex: (Math.random() - 0.5) * 16,
+        ey: (Math.random() - 0.5) * 12,
+        ez: (Math.random() - 0.5) * 8,
+      });
+    }
+
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    const mat = new THREE.PointsMaterial({ size: 0.06, vertexColors: true, transparent: true, opacity: 1 });
+    particleSystem = new THREE.Points(geo, mat);
+    scene.add(particleSystem);
+  });
+
+  /* ── MAIN TORUS KNOT ── */
   const knotGeo = new THREE.TorusKnotGeometry(1.4, 0.38, 200, 20, 2, 3);
   const knotMat = new THREE.MeshStandardMaterial({
-    color: 0x111111,
-    metalness: 0.95,
-    roughness: 0.05,
-    emissive: 0xff3300,
-    emissiveIntensity: 0.12,
+    color: 0x111111, metalness: 0.95, roughness: 0.05,
+    emissive: 0xff3300, emissiveIntensity: 0.15,
   });
   const knot = new THREE.Mesh(knotGeo, knotMat);
+  knot.scale.set(0, 0, 0);
   scene.add(knot);
 
-  // Wireframe overlay
   const wireMat = new THREE.MeshBasicMaterial({ color: 0xff4500, wireframe: true, transparent: true, opacity: 0.06 });
   const wireKnot = new THREE.Mesh(knotGeo, wireMat);
+  wireKnot.scale.set(0, 0, 0);
   scene.add(wireKnot);
 
-  // Outer glow ring
-  const ringGeo = new THREE.TorusGeometry(2.6, 0.015, 8, 160);
-  const ringMat = new THREE.MeshBasicMaterial({ color: 0xff4500, transparent: true, opacity: 0.35 });
-  const ring = new THREE.Mesh(ringGeo, ringMat);
+  /* ── LIQUID BLOB ── */
+  const blobGeo = new THREE.IcosahedronGeometry(0.75, 5);
+  const blobOrigPos = blobGeo.attributes.position.array.slice();
+  const blobMat = new THREE.MeshStandardMaterial({
+    color: 0x220011, metalness: 0.9, roughness: 0.1,
+    emissive: 0xff0066, emissiveIntensity: 0.3, transparent: true, opacity: 0,
+  });
+  const blob = new THREE.Mesh(blobGeo, blobMat);
+  blob.position.set(2.8, -0.8, -0.5);
+  scene.add(blob);
+
+  /* ── ORBITAL RINGS ── */
+  const ringGeo = new THREE.TorusGeometry(2.6, 0.012, 8, 160);
+  const ring = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color: 0xff4500, transparent: true, opacity: 0 }));
   ring.rotation.x = Math.PI / 2.5;
   scene.add(ring);
 
-  const ring2Geo = new THREE.TorusGeometry(3.1, 0.008, 8, 160);
-  const ring2Mat = new THREE.MeshBasicMaterial({ color: 0xff7a00, transparent: true, opacity: 0.18 });
-  const ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
-  ring2.rotation.x = Math.PI / 3;
-  ring2.rotation.z = Math.PI / 6;
+  const ring2 = new THREE.Mesh(
+    new THREE.TorusGeometry(3.1, 0.007, 8, 160),
+    new THREE.MeshBasicMaterial({ color: 0xff7a00, transparent: true, opacity: 0 })
+  );
+  ring2.rotation.x = Math.PI / 3; ring2.rotation.z = Math.PI / 6;
   scene.add(ring2);
 
-  // Particle field
-  const particleCount = 1800;
-  const positions = new Float32Array(particleCount * 3);
-  const sizes = new Float32Array(particleCount);
-  for (let i = 0; i < particleCount; i++) {
-    positions[i * 3]     = (Math.random() - 0.5) * 22;
-    positions[i * 3 + 1] = (Math.random() - 0.5) * 22;
-    positions[i * 3 + 2] = (Math.random() - 0.5) * 14;
-    sizes[i] = Math.random() * 2.5 + 0.5;
+  /* ── BACKGROUND PARTICLES ── */
+  const bgCount = 1600;
+  const bgPos = new Float32Array(bgCount * 3);
+  for (let i = 0; i < bgCount; i++) {
+    bgPos[i*3]   = (Math.random()-0.5)*22;
+    bgPos[i*3+1] = (Math.random()-0.5)*22;
+    bgPos[i*3+2] = (Math.random()-0.5)*14;
   }
-  const partGeo = new THREE.BufferGeometry();
-  partGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  partGeo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
-  const partMat = new THREE.PointsMaterial({
-    color: 0xff4500, size: 0.04, transparent: true, opacity: 0.55,
-    sizeAttenuation: true,
-  });
-  const particles = new THREE.Points(partGeo, partMat);
-  scene.add(particles);
+  const bgGeo = new THREE.BufferGeometry();
+  bgGeo.setAttribute('position', new THREE.BufferAttribute(bgPos, 3));
+  const bgParticles = new THREE.Points(bgGeo, new THREE.PointsMaterial({ color: 0xff4500, size: 0.035, transparent: true, opacity: 0.4 }));
+  scene.add(bgParticles);
 
-  // Mouse tracking
-  let mouseX = 0, mouseY = 0;
-  let targetX = 0, targetY = 0;
+  /* ── MOUSE ── */
+  let mouseX = 0, mouseY = 0, targetX = 0, targetY = 0;
   document.addEventListener('mousemove', e => {
     mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
     mouseY = -(e.clientY / window.innerHeight - 0.5) * 2;
   });
 
-  // Resize
+  /* ── SCROLL MORPH STATE ── */
+  let scrollProgress = 0;
+  ScrollTrigger.create({
+    trigger: '#hero', start: 'top top', end: '200% top', scrub: true,
+    onUpdate: self => { scrollProgress = self.progress; },
+  });
+
+  /* ── RESIZE ── */
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
 
-  // Animate
+  /* ── MORPH GEOMETRIES for scroll ── */
+  const morphGeos = [
+    new THREE.TorusKnotGeometry(1.4, 0.38, 200, 20, 2, 3),
+    new THREE.TorusKnotGeometry(1.4, 0.3, 200, 20, 3, 4),
+    new THREE.TorusKnotGeometry(1.3, 0.45, 200, 20, 5, 2),
+  ];
+  let currentMorphIdx = 0;
+
+  /* ── RENDER LOOP ── */
   const clock = new THREE.Clock();
   function animate() {
     requestAnimationFrame(animate);
     const t = clock.getElapsedTime();
+    const dt = clock.getDelta ? 0.016 : 0.016;
 
+    /* Particle text animation */
+    if (particleSystem && particlePhase < 3) {
+      phaseTimer += 0.016;
+      const pos = particleSystem.geometry.attributes.position.array;
+
+      if (particlePhase === 0) {
+        // Forming: lerp to text positions
+        let allClose = true;
+        for (let i = 0; i < particleData.length; i++) {
+          const p = particleData[i];
+          p.x += (p.tx - p.x) * 0.055;
+          p.y += (p.ty - p.y) * 0.055;
+          p.z += (0 - p.z) * 0.06;
+          pos[i*3] = p.x; pos[i*3+1] = p.y; pos[i*3+2] = p.z;
+          if (Math.abs(p.x - p.tx) > 0.15) allClose = false;
+        }
+        if (allClose || phaseTimer > 2.5) { particlePhase = 1; phaseTimer = 0; }
+      } else if (particlePhase === 1) {
+        // Holding
+        if (phaseTimer > 1.5) {
+          particlePhase = 2; phaseTimer = 0;
+          // Fade out hero content morph hint first
+          gsap.to('#morph-hint', { opacity: 0, duration: 0.5 });
+        }
+      } else if (particlePhase === 2) {
+        // Exploding
+        let allFar = true;
+        for (let i = 0; i < particleData.length; i++) {
+          const p = particleData[i];
+          p.x += (p.ex - p.x) * 0.08;
+          p.y += (p.ey - p.y) * 0.08;
+          p.z += (p.ez - p.z) * 0.08;
+          pos[i*3] = p.x; pos[i*3+1] = p.y; pos[i*3+2] = p.z;
+          if (Math.abs(p.x - p.ex) > 0.5) allFar = false;
+        }
+        particleSystem.material.opacity -= 0.015;
+        if (particleSystem.material.opacity <= 0 || phaseTimer > 1.2) {
+          particlePhase = 3;
+          scene.remove(particleSystem);
+          // Reveal torus knot
+          gsap.to(knot.scale, { x:1, y:1, z:1, duration:1.2, ease:'elastic.out(1,0.6)' });
+          gsap.to(wireKnot.scale, { x:1, y:1, z:1, duration:1.2, ease:'elastic.out(1,0.6)', delay:0.1 });
+          gsap.to(ring.material, { opacity:0.3, duration:1.5, delay:0.3 });
+          gsap.to(ring2.material, { opacity:0.15, duration:1.5, delay:0.5 });
+          gsap.to(blobMat, { opacity:1, duration:1.5, delay:0.5 });
+          // Reveal hero content
+          gsap.to('#hero-content', { opacity:1, duration:1, delay:0.4, ease:'power3.out' });
+          gsap.to('#morph-hint', { opacity:1, duration:1, delay:1.2 });
+        }
+      }
+      particleSystem.geometry.attributes.position.needsUpdate = true;
+    }
+
+    /* Mouse tracking */
     targetX += (mouseX - targetX) * 0.04;
     targetY += (mouseY - targetY) * 0.04;
 
-    knot.rotation.x = t * 0.18 + targetY * 0.3;
-    knot.rotation.y = t * 0.22 + targetX * 0.3;
+    /* Scroll-based morph */
+    const sp = Math.min(scrollProgress, 1);
+    const morphPhase = Math.floor(sp * 3);
+
+    // Change morph geometry at scroll milestones
+    if (morphPhase !== currentMorphIdx && morphPhase < morphGeos.length) {
+      currentMorphIdx = morphPhase;
+      knot.geometry.dispose();
+      wireKnot.geometry.dispose();
+      const newGeo = morphGeos[currentMorphIdx];
+      knot.geometry = newGeo;
+      wireKnot.geometry = newGeo;
+      // Update morph dots
+      document.querySelectorAll('.morph-dot').forEach((d, i) => {
+        d.classList.toggle('active', i === currentMorphIdx);
+      });
+    }
+
+    // Color morph based on scroll
+    const r = 1;
+    const g = sp * 0.3;
+    const b = sp * 0.8;
+    orangeLight.color.setRGB(r, g * 0.5, b * 0.2);
+    knotMat.emissive.setRGB(r * 0.2, g * 0.05, b * 0.1);
+    blobMat.emissive.setRGB(0.8, sp * 0.2, 0.4 + sp * 0.4);
+
+    /* Torus knot animation */
+    const speedMult = 1 + sp * 1.5;
+    knot.rotation.x = t * 0.18 * speedMult + targetY * 0.35;
+    knot.rotation.y = t * 0.22 * speedMult + targetX * 0.35;
     wireKnot.rotation.x = knot.rotation.x;
     wireKnot.rotation.y = knot.rotation.y;
 
+    /* Blob animation — organic vertex displacement */
+    if (blob.visible) {
+      const bPos = blobGeo.attributes.position.array;
+      for (let i = 0; i < bPos.length; i += 3) {
+        const ox = blobOrigPos[i], oy = blobOrigPos[i+1], oz = blobOrigPos[i+2];
+        const noise = Math.sin(t*1.1 + ox*3.5) * Math.cos(t*0.8 + oy*3.5) * Math.sin(t*0.6 + oz*3.5);
+        const s = 1 + noise * 0.28;
+        bPos[i] = ox * s; bPos[i+1] = oy * s; bPos[i+2] = oz * s;
+      }
+      blobGeo.attributes.position.needsUpdate = true;
+      blobGeo.computeVertexNormals();
+      blob.rotation.y = t * 0.3 + targetX * 0.2;
+      blob.rotation.x = t * 0.2 + targetY * 0.15;
+      blob.position.x = 2.6 + Math.sin(t * 0.4) * 0.3 + targetX * 0.4;
+      blob.position.y = -0.8 + Math.cos(t * 0.3) * 0.2 + targetY * 0.3;
+    }
+
+    /* Rings */
     ring.rotation.z = t * 0.12;
     ring2.rotation.z = -t * 0.09;
 
-    orangeLight.position.x = Math.sin(t * 0.6) * 4;
-    orangeLight.position.z = Math.cos(t * 0.6) * 4;
+    /* Orbiting light */
+    orangeLight.position.x = Math.sin(t * 0.55) * 4.5;
+    orangeLight.position.z = Math.cos(t * 0.55) * 4.5;
+    orangeLight.position.y = Math.sin(t * 0.3) * 2;
 
-    particles.rotation.y = t * 0.025;
-    particles.rotation.x = t * 0.015;
+    bgParticles.rotation.y = t * 0.022;
+    bgParticles.rotation.x = t * 0.012;
 
     renderer.render(scene, camera);
   }
   animate();
-})();
 
-/* ─── NAV SCROLL ─── */
-const nav = document.getElementById('nav');
+  /* Hero parallax */
+  gsap.to('#hero-content', {
+    y: -100, ease: 'none',
+    scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true }
+  });
+}
+
+/* ══════════════════════════════════════
+   3. NAV
+══════════════════════════════════════ */
 window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 50);
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
 });
 
-/* ─── HERO ENTRANCE ─── */
-const tl = gsap.timeline({ delay: 0.3 });
-tl.to('#h-eyebrow', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
-  .to('#h-title',   { opacity: 1, y: 0, duration: 1,   ease: 'power3.out' }, '-=0.5')
-  .to('#h-sub',     { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.6')
-  .to('#h-actions', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.5');
-
-/* ─── SCROLL REVEALS ─── */
+/* ══════════════════════════════════════
+   4. SCROLL REVEALS
+══════════════════════════════════════ */
 gsap.utils.toArray('.reveal').forEach(el => {
   gsap.to(el, {
     opacity: 1, y: 0, duration: 1, ease: 'power3.out',
@@ -744,23 +883,63 @@ gsap.utils.toArray('.reveal').forEach(el => {
   });
 });
 
-/* ─── WHY CARDS ─── */
 gsap.utils.toArray('.why-card').forEach((card, i) => {
   gsap.to(card, {
-    opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', delay: i * 0.12,
+    opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', delay: i * 0.1,
     scrollTrigger: { trigger: card, start: 'top 88%', toggleActions: 'play none none none' }
   });
 });
 
-/* ─── PRODUCT CARDS ─── */
+/* ══════════════════════════════════════
+   5. 3D CATWALK — PRODUCT ENTRANCE
+══════════════════════════════════════ */
 gsap.utils.toArray('.product-card').forEach((card, i) => {
-  gsap.to(card, {
-    opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', delay: (i % 3) * 0.12,
-    scrollTrigger: { trigger: card, start: 'top 88%', toggleActions: 'play none none none' }
+  const row = Math.floor(i / 3);
+  const col = i % 3;
+  const delay = row * 0.15 + col * 0.1;
+  const rotY = col === 0 ? -20 : col === 2 ? 20 : 0;
+  const rotX = row === 0 ? 10 : -5;
+
+  gsap.fromTo(card,
+    { opacity: 0, z: -400, rotateY: rotY, rotateX: rotX },
+    {
+      opacity: 1, z: 0, rotateY: 0, rotateX: 0,
+      duration: 1, ease: 'power3.out', delay,
+      scrollTrigger: { trigger: card, start: 'top 90%', toggleActions: 'play none none none' }
+    }
+  );
+});
+
+/* ══════════════════════════════════════
+   6. 3D TILT ON PRODUCT CARDS
+══════════════════════════════════════ */
+document.querySelectorAll('.product-card').forEach(card => {
+  const shine = card.querySelector('.card-shine');
+
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+    card.style.transition = 'transform 0.1s ease, box-shadow 0.1s ease';
+    card.style.transform = `perspective(900px) rotateY(${x * 16}deg) rotateX(${-y * 16}deg) translateY(-10px) scale(1.03)`;
+
+    if (shine) {
+      shine.style.opacity = '1';
+      shine.style.background = `radial-gradient(circle at ${(x + 0.5) * 100}% ${(y + 0.5) * 100}%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 40%, transparent 70%)`;
+    }
+  });
+
+  card.addEventListener('mouseleave', () => {
+    card.style.transition = 'transform 0.6s ease, box-shadow 0.6s ease';
+    card.style.transform = 'perspective(900px) rotateY(0deg) rotateX(0deg) translateY(0px) scale(1)';
+    if (shine) shine.style.opacity = '0';
   });
 });
 
-/* ─── ORDER STEPS ─── */
+/* ══════════════════════════════════════
+   7. ORDER STEPS + TESTIMONIALS
+══════════════════════════════════════ */
 gsap.utils.toArray('.order-step').forEach((step, i) => {
   gsap.to(step, {
     opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', delay: i * 0.15,
@@ -768,19 +947,11 @@ gsap.utils.toArray('.order-step').forEach((step, i) => {
   });
 });
 
-/* ─── TESTIMONIALS ─── */
 gsap.utils.toArray('.testimonial-card').forEach((card, i) => {
   gsap.to(card, {
     opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', delay: i * 0.12,
     scrollTrigger: { trigger: card, start: 'top 88%', toggleActions: 'play none none none' }
   });
-});
-
-/* ─── PARALLAX HERO TEXT ─── */
-gsap.to('.hero-content', {
-  y: -120,
-  ease: 'none',
-  scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true }
 });
 </script>
 </body>
